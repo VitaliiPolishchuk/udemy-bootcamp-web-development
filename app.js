@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 var express        = require("express"),
     app            = express(),
     bodyParser     = require("body-parser"),
@@ -16,8 +18,8 @@ var commentRoutes    = require("./routes/comments"),
     campgroundRoutes = require("./routes/campground"),
     authRoutes       = require("./routes/index")
 
-mongoose.connect(process.env.DATABASEURL, { useNewUrlParser: true });
-// mongoose.connect("mongodb://yelp:yelp1000@ds237192.mlab.com:37192/yelpcamp");
+var url = process.env.DATABASEURL || "mongodb://localhost/yelp_camp";
+mongoose.connect(url, { useNewUrlParser: true });
 
 
 app.use(bodyParser.urlencoded({extended: true}));
@@ -44,11 +46,6 @@ app.use(function(req, res, next){
    res.locals.success = req.flash("success");
    next();
 });
-
-//EDIT CAMPGROUND
-
-//UPDATE CAMPGROUND
-
 
 app.post("/register", function(req, res) {
     var newUser = new User({username: req.body.username});
